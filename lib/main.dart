@@ -25,45 +25,39 @@ class _HomeState extends State<Home> {
   final euroController = TextEditingController();
 
   void _realChanged(String text) {
-
-    if( !text.isEmpty ){
+    if (!text.isEmpty) {
       double real = double.parse(text);
 
-      dollarController.text = (real/dollar).toStringAsFixed(2);
-      euroController.text = (real/euro).toStringAsFixed(2);
-    }else{
+      dollarController.text = (real / dollar).toStringAsFixed(2);
+      euroController.text = (real / euro).toStringAsFixed(2);
+    } else {
       dollarController.text = '0.00';
       euroController.text = '0.00';
     }
-
   }
 
   void _dollarChaged(String text) {
-
-    if( !text.isEmpty ){
+    if (!text.isEmpty) {
       double dolar = double.parse(text);
 
-      realController.text = ( dolar * dollar).toStringAsFixed(2);
-      euroController.text = ( dolar * dollar / euro ).toStringAsFixed(2);
-    }else{
+      realController.text = (dolar * dollar).toStringAsFixed(2);
+      euroController.text = (dolar * dollar / euro).toStringAsFixed(2);
+    } else {
       realController.text = '0.00';
       euroController.text = '0.00';
     }
-
   }
 
   void _euroChaged(String text) {
-
-    if( !text.isEmpty ){
+    if (!text.isEmpty) {
       double euro = double.parse(text);
 
-      realController.text = ( euro * this.euro).toStringAsFixed(2);
-      euroController.text = ( euro * this.euro / dollar ).toStringAsFixed(2);
-    }else{
+      realController.text = (euro * this.euro).toStringAsFixed(2);
+      euroController.text = (euro * this.euro / dollar).toStringAsFixed(2);
+    } else {
       realController.text = '0.00';
       euroController.text = '0.00';
     }
-
   }
 
   double dollar = 0;
@@ -110,12 +104,42 @@ class _HomeState extends State<Home> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "USD: ${dollar.toStringAsPrecision(3)}",
+                            style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.deepPurpleAccent),
+                          ),
+                          const SizedBox(
+                            width: 15,
+                            child: Padding(
+                              padding: EdgeInsets.only(right: 5, left: 5),
+                              child: Text(
+                                '|',
+                                style: TextStyle(fontSize: 25),
+                              ),
+                            ),
+                          ),
+                          Text(
+                            "EUR:${dollar.toStringAsPrecision(3)}",
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.deepPurpleAccent,
+                            ),
+                          ),
+                        ],
+                      ),
                       const Icon(
                         Icons.monetization_on_outlined,
                         size: 150,
                         color: Colors.deepPurpleAccent,
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 20,),
                       buildTextField(
                           'Reais', "R\$ ", realController, _realChanged),
                       const SizedBox(height: 20),
@@ -153,7 +177,7 @@ class _HomeState extends State<Home> {
 }
 
 Future<Map> getData() async {
-  const request = 'https://api.hgbrasil.com/finance?format=json&key=80267e84';
+  const request = 'https://api.hgbrasil.com/finance?format=json';
 
   http.Response response = await http.get(Uri.parse(request));
   return json.decode(response.body);
